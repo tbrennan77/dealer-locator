@@ -1,4 +1,4 @@
-/*!
+  /*!
  * Searchable Map Template with Google Fusion Tables
  * http://derekeder.com/searchable_map_template/
  *
@@ -319,7 +319,7 @@ if ( $("#select_type").val() != "")
   // NOTE: if you add custom functions, make sure to append each one with a comma, except for the last one.
   // This also applies to the convertToPlainString function above
   getList: function(whereClause) {
-	  var selectColumns = "name, city, country, phone, postalcode, address, state";
+	  var selectColumns = "name, city, country, phone, postalcode, address, state, link, email, hours, facebook, twitter, premiere, appointment";
 	  MapsLib.query(selectColumns, whereClause, "", "", "MapsLib.displayList");
 	},
 
@@ -337,20 +337,45 @@ if ( $("#select_type").val() != "")
 	  }
 	  else {
 		for (var row in data) {
-		  template = "\
-			<div class='row-fluid item-list'>\
-			  <div class='span12'>\
+      template = "";
+
+      if(data[row][13]) {
+        template += "<div class='row-fluid item-list appointmentonly'>";
+      }
+
+      if(data[row][12]) {
+        template += "<div class='row-fluid item-list premiere'>";
+      }
+
+		  template += "<div class='span12'>\
 				<strong>" + data[row][0] + "</strong>\
 				<br />\
-				" + data[row][5] + "\
+				" + data[row][9] + "\
+        <br />\
+        " + data[row][5] + "\
 				<br />\
 				" + data[row][1] + ", " + data[row][6] + " " + data[row][4] + "\
-				<br />\
-				" + data[row][3] + "\
-				<br />\
-				<a href=\"https://www.google.com/maps/place/" + data[row][5] + ", " + data[row][1] + ", " + data[row][6] + " " + data[row][4] + "\" + onclick='return !window.open(this.href);'><small>get directions</small></a><br /><br />\
-			  </div>\
-			</div>";
+				<br /><a href=\"tel:" + data[row][3] + "\" class='chapter-phone'><i class=\"fa fa-phone\" aria-hidden=\"true\"></i>" + data[row][3] + "</a>\
+        <br /><a href=\"mailto:" + data[row][8] + "\" class='chapter-email'><i class=\"fa fa-envelope\" aria-hidden=\"true\"></i>" + data[row][8] + "</a><br />\
+				<a href=\"https://www.google.com/maps/place/" + data[row][5] + ", " + data[row][1] + ", " + data[row][6] + " " + data[row][4] + "\" + onclick='return !window.open(this.href);' class='chapter-map'><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i>Map This</a>";
+			 
+       // Add Facebook link if exists
+       if(data[row][10]) {
+        template += "<a href=\"" + data[row][10] + "\" class='chapter-facebook'><i class=\"fa fa-facebook-official\" aria-hidden=\"true\"></i>Facebook</a>";
+       }
+
+       // Add Twitter link if exists
+       if(data[row][11]) {
+        template += "<a href=\"" + data[row][11] + "\" class='chapter-twitter'><i class=\"fa fa-twitter\" aria-hidden=\"true\"></i>Twitter</a>";
+       }
+
+       // Add Appt Only
+       if(data[row][13]) {
+        template += "<br /><small>This chapter is appointment only. Please call to schedule an appointment time.</small>";
+       }
+
+       template += "<br /><br /></div></div>";
+
 		  results.append(template);
 		}
 	  }
