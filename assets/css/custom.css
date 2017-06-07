@@ -69,9 +69,9 @@ ul.maptype {
 	padding-top:30px;
 }
 #results_list {
-columns: 2;
--moz-columns: 2; /* Firefox */
--webkit-columns: 2; 
+/* columns: 2;
+-moz-columns: 2;
+-webkit-columns: 2;  */
 }
 
 #map_canvas {
